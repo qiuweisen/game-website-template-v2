@@ -1,15 +1,15 @@
 {
-  "title": "",
-  "slogan": "",
-  "description": "",
+  "title": "Sprunki Retake ",
+  "slogan": "Experience the new Sprunki Retake adventure",
+  "description": "Dive into the musical world of Sprunki Retake and unleash your creativity!",
   "Loading": {
-    "title": ""
+    "title": "Loading Sprunki Retake..."
   },
-  "Navbar":{
-    "title": "Nav"
+  "Navbar": {
+    "title": "Navigation"
   },
   "Common": {
-    "createAt": "Create At",
+    "createAt": "Created At",
     "guide": "Guide",
     "privacyPolicy": "Privacy Policy",
     "termsOfServices": "Terms of Services",
@@ -18,53 +18,53 @@
     "friendlyLinks": "Friendly Links",
     "articleList": "Article List",
     "home": "Home",
-    "next":"Next",
-    "previous":"Previous"
+    "next": "Next",
+    "previous": "Previous"
   },
   "HomeIframe": {
-    "title": "",
+    "title": "Discover Sprunki Retake",
     "description": "",
-    "iframeTitle": "Game Preview",
+    "iframeTitle": "Sprunki Retake Preview",
     "fullscreenButton": "Fullscreen",
     "shareButton": "Share",
     "urlCopied": "URL copied to clipboard!",
-    "downloadGame": "Download Game",
+    "downloadGame": "Download Sprunki Retake",
     "playGame": "Play Game"
   },
   "HomeFeatures": {
-    "gameTitle": "",
-    "whatIsTitle": "",
-    "whatIsDescription": "",
-    "howToPlayTitle": "How to Play",
-    "howToPlayStep1": "",
-    "howToPlayStep2": "",
-    "howToPlayStep3": "",
-    "keyFeaturesTitle": "Key Features",
-    "feature1Title": "",
-    "feature1Description": "",
-    "feature2Title": "",
-    "feature2Description": "",
-    "feature3Title": "",
-    "feature3Description": "",
-    "feature4Title": "",
-    "feature4Description": ""
+    "gameTitle": "Sprunki Retake: A New Musical Journey",
+    "whatIsTitle": "What is Sprunki Retake?",
+    "whatIsDescription": "Sprunki Retake is a fan-modified game offering unique music-mixing with custom sounds and new characters. Join a world of beats, vocals, and melodies combined to create your tracks.",
+    "howToPlayTitle": "How to Play Sprunki Retake",
+    "howToPlayStep1": "Launch the Game: Access it online and get started.",
+    "howToPlayStep2": "Select Sounds: Explore a variety of beats, effects, and vocals.",
+    "howToPlayStep3": "Mix & Match: Drag sounds to characters and innovate your track.",
+    "keyFeaturesTitle": "Key Features of Sprunki Retake",
+    "feature1Title": "New Musical Styles",
+    "feature1Description": "Experience fresh and diverse musical styles that enhance gameplay.",
+    "feature2Title": "Creative Freedom",
+    "feature2Description": "Enjoy expanded creative freedom with special sounds and characters.",
+    "feature3Title": "Optimized for Mobile",
+    "feature3Description": "Play Sprunki Retake seamlessly on your mobile device.",
+    "feature4Title": "Free to Play",
+    "feature4Description": "Engage without limits - Sprunki Retake is completely free!"
   },
   "HomeFAQs": {
-    "title": "FAQs"
+    "title": "FAQs about Sprunki Retake"
   },
   "HomeRelatedVideo": {
-    "title": "Game Video"
+    "title": "Sprunki Retake Video"
   },
   "HomeRecommendation": {
-    "title": "Recommends"
+    "title": "Recommended Games"
   },
   "HomeComments": {
-    "title": "Play Comments"
+    "title": "Comments on Sprunki Retake"
   },
   "GamePage": {
     "title": "All Games",
     "description": "All Games",
-    "games":"Games"
+    "games": "Games"
   },
   "CategoryPage": {
     "categories": "Categories",
