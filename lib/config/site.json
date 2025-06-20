@@ -56,5 +56,5 @@
   ],
   "isShowRecommendation": true,
   "enablePromotion": false,
-  "customizeFeatures": true
+  "customizeFeatures": false
 }

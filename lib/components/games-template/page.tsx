@@ -60,11 +60,11 @@ export default async function Page({ params }: Props) {
   }
 
   const PageContent = () => (
-    <div className="bg-background pt-5 pb-5">
-      <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row">
+    <div className="bg-background pt-6 pb-8">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* 左侧主要内容区域 */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 space-y-6">
             <IframeTopSlot/>
             <IframeSection pageName={pageName} />
             <IframeBottomSlot/>
@@ -79,7 +79,7 @@ export default async function Page({ params }: Props) {
             <Recommendation locale={locale} />
             <DownloadGame pageName={pageName} siteConfig={siteConfig2} />
           </div>
-          
+
           {/* 右侧推荐卡片 - 移动端隐藏 */}
           <GameRecommendationCard locale={locale} />
         </div>

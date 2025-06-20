@@ -247,6 +247,8 @@ export const siteConfig: SiteConfig = config;
 
 ### 4.2 推荐游戏配置 `resources/recommendation/en.json`
 
+推荐游戏等后续网站有流量后再增加
+
 ```json
 [
   {
