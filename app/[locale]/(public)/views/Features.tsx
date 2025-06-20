@@ -32,23 +32,54 @@ export default async function Features({pageName}:{pageName:string|null|undefine
 
       <section className="mb-6 md:mb-12">
         <h2 className="text-lg md:text-3xl font-semibold mb-4 md:mb-6 text-feature-title font-leckerli break-words">{t('howToPlayTitle')}</h2>
-        <div className="bg-feature-card/50 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-feature-card/20 hover:bg-feature-card/60 transition-all duration-300">
-          <ul className="space-y-3 md:space-y-4 text-sm md:text-base text-feature-description">
-            {[1, 2, 3].map((step, index) => (
-              <li
-                key={step}
-                className="flex items-start gap-3 md:gap-4 leading-relaxed group"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <span className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 bg-feature-title/20 text-feature-title rounded-full flex items-center justify-center text-xs md:text-sm font-semibold group-hover:bg-feature-title/30 transition-colors duration-300">
-                  {step}
-                </span>
-                <span className="break-words flex-1 pt-0.5 md:pt-1">
-                  {t(`howToPlayStep${step}`)}
-                </span>
-              </li>
-            ))}
-          </ul>
+
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 items-start">
+          {/* 左侧操作演示图片区域 */}
+          <div className="w-full lg:w-2/5 flex-shrink-0">
+            <div className="bg-gradient-to-br from-feature-card/40 to-feature-card-hover/20 rounded-xl p-3 border border-feature-card/30 hover:border-feature-card-hover/50 transition-all duration-300 group">
+              <div className="aspect-video overflow-hidden rounded-lg relative bg-feature-card/20">
+                <img
+                  src={`${screenshot_prefix}/how-to-play.webp`}
+                  alt="How to play demonstration"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    // 如果专用图片不存在，使用游戏截图作为后备
+                    e.currentTarget.src = game_screenshot_path;
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                <div className="absolute bottom-2 left-2 right-2">
+                  <div className="bg-feature-card/80 backdrop-blur-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-xs text-feature-title font-medium">Game Controls</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 右侧步骤说明区域 */}
+          <div className="flex-1 w-full">
+            <div className="bg-feature-card/50 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-feature-card/20 hover:bg-feature-card/60 transition-all duration-300">
+              <ul className="space-y-4 md:space-y-5 text-sm md:text-base text-feature-description">
+                {[1, 2, 3].map((step, index) => (
+                  <li
+                    key={step}
+                    className="flex items-start gap-3 md:gap-4 leading-relaxed group"
+                    style={{ animationDelay: `${index * 150}ms` }}
+                  >
+                    <span className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-feature-title/20 to-feature-title/10 text-feature-title rounded-full flex items-center justify-center text-sm md:text-base font-bold group-hover:from-feature-title/30 group-hover:to-feature-title/20 transition-all duration-300 border border-feature-title/20">
+                      {step}
+                    </span>
+                    <div className="flex-1 pt-1 md:pt-1.5">
+                      <span className="break-words text-feature-description group-hover:text-feature-title/90 transition-colors duration-300">
+                        {t(`howToPlayStep${step}`)}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
       <section className="mb-6 md:mb-12">
