@@ -42,10 +42,6 @@ export default async function Features({pageName}:{pageName:string|null|undefine
                   src={`${screenshot_prefix}/how-to-play.webp`}
                   alt="How to play demonstration"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  onError={(e) => {
-                    // 如果专用图片不存在，使用游戏截图作为后备
-                    e.currentTarget.src = game_screenshot_path;
-                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                 <div className="absolute bottom-2 left-2 right-2">

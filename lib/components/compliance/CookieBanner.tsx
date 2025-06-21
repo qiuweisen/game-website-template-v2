@@ -23,6 +23,7 @@ export default function CookieBanner({
   const t = useTranslations('Cookies');
   const [isVisible, setIsVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [preferences, setPreferences] = useState({
     necessary: true, // 必要Cookie，不可关闭
     analytics: false,
@@ -31,7 +32,11 @@ export default function CookieBanner({
   });
 
   useEffect(() => {
-    if (autoShow) {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && autoShow) {
       const cookieConsent = localStorage.getItem('cookie_consent');
       if (!cookieConsent) {
         // 延迟显示，避免影响页面加载
@@ -39,7 +44,7 @@ export default function CookieBanner({
         return () => clearTimeout(timer);
       }
     }
-  }, [autoShow]);
+  }, [autoShow, isClient]);
 
   const handleAcceptAll = () => {
     const consent = {
