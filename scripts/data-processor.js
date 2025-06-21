@@ -60,11 +60,23 @@ function processAIData(inputFile, outputDir = './output') {
       generateFAQFiles(aiData, outputDir);
       console.log('✅ 生成FAQ文件');
     }
-    
+
+    // 生成视频数据文件
+    if (aiData.videos && aiData.videos.length > 0) {
+      generateVideoFiles(aiData, outputDir);
+      console.log('✅ 生成视频数据文件');
+    }
+
+    // 生成评论数据文件
+    if (aiData.comments && aiData.comments.length > 0) {
+      generateCommentFiles(aiData, outputDir);
+      console.log('✅ 生成评论数据文件');
+    }
+
     // 生成部署脚本
     generateDeploymentScript(aiData, outputDir);
     console.log('✅ 生成部署脚本');
-    
+
     // 生成素材需求清单
     generateAssetRequirements(aiData, outputDir);
     console.log('✅ 生成素材需求清单');
@@ -94,21 +106,47 @@ function validateAIData(data) {
     'gameplay.howToPlay',
     'multiLanguage.en'
   ];
-  
+
   for (const field of required) {
     if (!getNestedValue(data, field)) {
       throw new Error(`缺少必填字段: ${field}`);
     }
   }
-  
+
   // 验证核心特色数量
   if (data.gameplay.coreFeatures.length !== 4) {
     throw new Error('核心特色必须为4个');
   }
-  
+
   // 验证操作步骤数量
   if (data.gameplay.howToPlay.length !== 3) {
     throw new Error('操作步骤必须为3个');
+  }
+
+  // 验证视频数据（如果存在）
+  if (data.videos && data.videos.length > 0) {
+    data.videos.forEach((video, index) => {
+      if (!video.title || !video.url) {
+        throw new Error(`视频 ${index + 1} 缺少标题或链接`);
+      }
+    });
+  }
+
+  // 验证评论数据（如果存在）
+  if (data.comments && data.comments.length > 0) {
+    data.comments.forEach((comment, index) => {
+      if (!comment.author || !comment.content) {
+        throw new Error(`评论 ${index + 1} 缺少作者或内容`);
+      }
+    });
+  }
+
+  // 验证下载链接（如果存在）
+  if (data.downloadUrls) {
+    const hasAnyUrl = Object.values(data.downloadUrls).some(url => url && url.trim() !== '');
+    if (!hasAnyUrl) {
+      console.warn('⚠️ 警告: 下载链接数据存在但没有有效的URL');
+    }
   }
 }
 
@@ -117,13 +155,19 @@ function validateAIData(data) {
  */
 function generateSiteConfig(data) {
   const gameName = data.gameInfo.name.en.toLowerCase().replace(/\s+/g, '-');
-  const gameType = data.gameInfo.category.toLowerCase();
+  const gameType = data.gameInfo.category ? data.gameInfo.category.toLowerCase() : 'game';
   const recommendedTheme = THEME_MAPPING[gameType] || THEME_MAPPING.default;
-  
+
+  // 处理下载链接
+  const downloadUrls = data.downloadUrls || {};
+  const hasDownloadUrls = Object.values(downloadUrls).some(url => url && url.trim() !== '');
+
   return {
     name: data.gameInfo.name.en,
+    pageName: gameName,
     gameIframeUrl: data.gameInfo.gameUrl || "#",
     gameType: data.gameInfo.gameUrl ? "iframe" : "download",
+    templateType: "game",
     theme: {
       name: data.technicalConfig?.recommendedTheme || recommendedTheme
     },
@@ -133,16 +177,25 @@ function generateSiteConfig(data) {
       keywords: data.seo?.primaryKeywords?.join(', ') || data.gameInfo.name.en
     },
     isShowFAQs: data.faq && data.faq.length > 0,
-    isShowVideo: false,
-    isShowComments: true,
+    isShowVideo: data.videos && data.videos.length > 0,
+    isShowComments: data.comments && data.comments.length > 0,
     isShowRecommendation: true,
     enablePromotion: false,
     customizeFeatures: false,
+
+    // 视频配置
+    videos: data.videos || [],
+
+    // 评论配置
+    comments: data.comments || [],
+
+    // 下载配置
     gameDownload: {
-      showDownloadButton: data.gameInfo.gameUrl ? false : true,
-      downloadUrl: data.gameInfo.gameUrl || "#",
+      showDownloadButton: hasDownloadUrls,
+      downloadUrls: downloadUrls,
       downloadCount: "10,000+"
     },
+
     compliance: generateComplianceConfig(data)
   };
 }
@@ -181,7 +234,7 @@ function generateLanguageFiles(data, outputDir) {
 function generateLanguageContent(langData, fullData, lang) {
   const isEnglish = lang === 'en';
   const gameNameKey = isEnglish ? fullData.gameInfo.name.en : (fullData.gameInfo.name[lang] || fullData.gameInfo.name.en);
-  
+
   return {
     HomeFeatures: {
       gameTitle: langData.gameTitle || `${gameNameKey}: Online Game`,
@@ -202,13 +255,18 @@ function generateLanguageContent(langData, fullData, lang) {
       feature4Description: getFeatureDescForLang(fullData.gameplay.coreFeatures[3], lang)
     },
     HomeFAQs: {
-      title: `FAQs about ${gameNameKey}`
+      title: langData.faqTitle || `FAQs about ${gameNameKey}`
     },
     HomeRelatedVideo: {
-      title: `${gameNameKey} Video`
+      title: langData.videoTitle || `${gameNameKey} Videos`
     },
     HomeComments: {
-      title: `Comments on ${gameNameKey}`
+      title: langData.commentsTitle || `Player Reviews`
+    },
+    DownloadGame: {
+      title: langData.downloadTitle || `Download ${gameNameKey}`,
+      downloadButton: "Download Now",
+      availableOn: "Available on:"
     },
     IframeSection: {
       title: gameNameKey,
@@ -218,6 +276,10 @@ function generateLanguageContent(langData, fullData, lang) {
     },
     LoadingSection: {
       title: `Loading ${gameNameKey}...`
+    },
+    Recommendation: {
+      title: "More Games You Might Like",
+      playNow: "Play Now"
     }
   };
 }
@@ -246,29 +308,146 @@ function getNestedValue(obj, path) {
 }
 
 /**
+ * 获取视频类型
+ */
+function getVideoType(url) {
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    return 'YouTube';
+  } else if (url.includes('bilibili.com')) {
+    return 'Bilibili';
+  } else if (url.includes('vimeo.com')) {
+    return 'Vimeo';
+  } else {
+    return '其他平台';
+  }
+}
+
+/**
+ * 验证视频链接有效性
+ */
+function isValidVideoUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    return ['youtube.com', 'youtu.be', 'bilibili.com', 'vimeo.com'].some(domain =>
+      urlObj.hostname.includes(domain)
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
  * 生成FAQ文件
  */
 function generateFAQFiles(data, outputDir) {
   if (!data.faq || data.faq.length === 0) return;
-  
+
   const faqDir = path.join(outputDir, 'faq');
   if (!fs.existsSync(faqDir)) {
     fs.mkdirSync(faqDir, { recursive: true });
   }
-  
+
   for (const lang of SUPPORTED_LANGUAGES) {
     if (data.multiLanguage[lang] || lang === 'en') {
       const faqContent = data.faq.map(item => ({
         question: item.question[lang] || item.question.en,
         answer: item.answer[lang] || item.answer.en
       }));
-      
+
       fs.writeFileSync(
         path.join(faqDir, `${lang}.json`),
         JSON.stringify(faqContent, null, 2)
       );
     }
   }
+}
+
+/**
+ * 生成视频数据文件
+ */
+function generateVideoFiles(data, outputDir) {
+  if (!data.videos || data.videos.length === 0) return;
+
+  const videoDir = path.join(outputDir, 'videos');
+  if (!fs.existsSync(videoDir)) {
+    fs.mkdirSync(videoDir, { recursive: true });
+  }
+
+  // 生成视频配置文件
+  fs.writeFileSync(
+    path.join(videoDir, 'videos.json'),
+    JSON.stringify(data.videos, null, 2)
+  );
+
+  // 生成视频使用说明
+  const videoReadme = `# 视频配置说明
+
+## 📹 视频列表
+
+${data.videos.map((video, index) => `### ${index + 1}. ${video.title}
+- **链接**: ${video.url}
+- **类型**: ${getVideoType(video.url)}
+- **状态**: ${isValidVideoUrl(video.url) ? '✅ 有效' : '❌ 需要验证'}
+`).join('\n')}
+
+## 🔧 使用方法
+
+1. 将 \`videos.json\` 复制到项目的 \`lib/config/\` 目录
+2. 在网站配置中设置 \`isShowVideo: true\`
+3. 确保所有视频链接可以正常访问
+
+## ⚠️ 注意事项
+
+- 支持 YouTube、Bilibili、Vimeo 等主流平台
+- 确保视频内容与游戏相关
+- 建议视频时长在 1-10 分钟之间
+`;
+
+  fs.writeFileSync(path.join(videoDir, 'README.md'), videoReadme);
+}
+
+/**
+ * 生成评论数据文件
+ */
+function generateCommentFiles(data, outputDir) {
+  if (!data.comments || data.comments.length === 0) return;
+
+  const commentDir = path.join(outputDir, 'comments');
+  if (!fs.existsSync(commentDir)) {
+    fs.mkdirSync(commentDir, { recursive: true });
+  }
+
+  // 生成评论配置文件
+  fs.writeFileSync(
+    path.join(commentDir, 'comments.json'),
+    JSON.stringify(data.comments, null, 2)
+  );
+
+  // 生成评论使用说明
+  const commentReadme = `# 评论配置说明
+
+## 💬 评论列表
+
+${data.comments.map((comment, index) => `### ${index + 1}. ${comment.author}
+- **角色**: ${comment.role || '游戏玩家'}
+- **内容**: ${comment.content}
+- **头像**: ${comment.avatar || 'https://api.multiavatar.com/' + comment.author + '.svg'}
+`).join('\n')}
+
+## 🔧 使用方法
+
+1. 将 \`comments.json\` 复制到项目的 \`lib/config/\` 目录
+2. 在网站配置中设置 \`isShowComments: true\`
+3. 评论将自动显示在网站上
+
+## ⚠️ 注意事项
+
+- 确保评论内容积极正面
+- 用户名可以匿名化处理
+- 头像使用 multiavatar 服务自动生成
+`;
+
+  fs.writeFileSync(path.join(commentDir, 'README.md'), commentReadme);
 }
 
 /**
@@ -292,7 +471,25 @@ cp output/site.json lib/config/site.json
 echo "🌍 应用多语言内容..."
 cp -r output/messages/* messages/
 
-# 3. 创建游戏素材目录
+# 3. 复制FAQ文件（如果存在）
+if [ -d "output/faq" ]; then
+  echo "❓ 应用FAQ内容..."
+  cp -r output/faq/* app/[locale]/(public)/faq/
+fi
+
+# 4. 复制视频配置（如果存在）
+if [ -f "output/videos/videos.json" ]; then
+  echo "🎬 应用视频配置..."
+  cp output/videos/videos.json lib/config/
+fi
+
+# 5. 复制评论配置（如果存在）
+if [ -f "output/comments/comments.json" ]; then
+  echo "💬 应用评论配置..."
+  cp output/comments/comments.json lib/config/
+fi
+
+# 6. 创建游戏素材目录
 echo "📁 创建素材目录..."
 mkdir -p public/games/\${GAME_NAME}
 
@@ -372,6 +569,26 @@ ${data.gameplay.howToPlay.map((step, i) => `${i + 1}. ${step.en}`).join('\n')}
 - 体现游戏核心特色
 - 简洁易识别
 - 适合小尺寸显示
+
+## 🎬 视频内容 ${data.videos && data.videos.length > 0 ? `(${data.videos.length}个视频)` : '(无视频)'}
+
+${data.videos && data.videos.length > 0 ?
+  data.videos.map((video, i) => `### ${i + 1}. ${video.title}
+- **链接**: ${video.url}
+- **平台**: ${getVideoType(video.url)}
+- **状态**: ${isValidVideoUrl(video.url) ? '✅ 链接有效' : '⚠️ 需要验证'}
+`).join('\n') :
+  '暂无视频内容，建议添加游戏预告片或演示视频。'
+}
+
+## 💬 用户评论 ${data.comments && data.comments.length > 0 ? `(${data.comments.length}条评论)` : '(无评论)'}
+
+${data.comments && data.comments.length > 0 ?
+  data.comments.map((comment, i) => `### ${i + 1}. ${comment.author} (${comment.role || '游戏玩家'})
+> ${comment.content}
+`).join('\n') :
+  '暂无用户评论，建议收集真实用户反馈。'
+}
 
 ## ✅ 检查清单
 

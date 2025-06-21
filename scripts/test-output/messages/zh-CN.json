@@ -1,0 +1,47 @@
+{
+  "HomeFeatures": {
+    "gameTitle": "测试游戏：在线益智",
+    "whatIsTitle": "什么是测试游戏？",
+    "whatIsDescription": "适合所有人的有趣益智游戏",
+    "howToPlayTitle": "如何玩测试游戏",
+    "howToPlayStep1": "点击选择拼图块",
+    "howToPlayStep2": "拖拽移动拼图块",
+    "howToPlayStep3": "完成拼图",
+    "keyFeaturesTitle": "测试游戏的主要特色",
+    "feature1Title": "易于学习",
+    "feature1Description": "简单的控制，适合所有人",
+    "feature2Title": "挑战性谜题",
+    "feature2Description": "令人费解的挑战",
+    "feature3Title": "精美图形",
+    "feature3Description": "令人惊叹的视觉设计",
+    "feature4Title": "轻松音乐",
+    "feature4Description": "舒缓的背景音乐"
+  },
+  "HomeFAQs": {
+    "title": "常见问题"
+  },
+  "HomeRelatedVideo": {
+    "title": "测试游戏视频"
+  },
+  "HomeComments": {
+    "title": "玩家评价"
+  },
+  "DownloadGame": {
+    "title": "下载测试游戏",
+    "downloadButton": "Download Now",
+    "availableOn": "Available on:"
+  },
+  "IframeSection": {
+    "title": "测试游戏",
+    "description": "适合所有人的有趣益智游戏",
+    "playGame": "Play Game",
+    "downloadGame": "Download Game"
+  },
+  "LoadingSection": {
+    "title": "Loading 测试游戏..."
+  },
+  "Recommendation": {
+    "title": "More Games You Might Like",
+    "playNow": "Play Now"
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Game Trailer",
+    "url": "https://youtube.com/watch?v=test123"
+  },
+  {
+    "title": "Gameplay Demo",
+    "url": "https://youtube.com/watch?v=demo456"
+  },
+  {
+    "title": "Tutorial Video",
+    "url": "https://bilibili.com/video/test789"
+  }
+]

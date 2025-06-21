@@ -1,0 +1,47 @@
+{
+  "HomeFeatures": {
+    "gameTitle": "Test Game: Online Puzzle",
+    "whatIsTitle": "What is Test Game?",
+    "whatIsDescription": "A fun puzzle game for everyone",
+    "howToPlayTitle": "How to Play Test Game",
+    "howToPlayStep1": "Click to select pieces",
+    "howToPlayStep2": "Drag to move pieces",
+    "howToPlayStep3": "Complete the puzzle",
+    "keyFeaturesTitle": "Key Features of Test Game",
+    "feature1Title": "Easy to Learn",
+    "feature1Description": "Simple controls for everyone",
+    "feature2Title": "Challenging Puzzles",
+    "feature2Description": "Brain-teasing challenges",
+    "feature3Title": "Beautiful Graphics",
+    "feature3Description": "Stunning visual design",
+    "feature4Title": "Relaxing Music",
+    "feature4Description": "Soothing background music"
+  },
+  "HomeFAQs": {
+    "title": "Frequently Asked Questions"
+  },
+  "HomeRelatedVideo": {
+    "title": "Test Game Videos"
+  },
+  "HomeComments": {
+    "title": "Player Reviews"
+  },
+  "DownloadGame": {
+    "title": "Download Test Game",
+    "downloadButton": "Download Now",
+    "availableOn": "Available on:"
+  },
+  "IframeSection": {
+    "title": "Test Game",
+    "description": "A fun puzzle game for everyone",
+    "playGame": "Play Game",
+    "downloadGame": "Download Game"
+  },
+  "LoadingSection": {
+    "title": "Loading Test Game..."
+  },
+  "Recommendation": {
+    "title": "More Games You Might Like",
+    "playNow": "Play Now"
+  }
+}

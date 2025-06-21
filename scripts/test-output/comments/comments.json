@@ -1,0 +1,20 @@
+[
+  {
+    "author": "Player1",
+    "role": "游戏玩家",
+    "content": "This game is amazing! I love the puzzles.",
+    "avatar": "https://api.multiavatar.com/Player1.svg"
+  },
+  {
+    "author": "TestUser",
+    "role": "资深玩家",
+    "content": "Great graphics and smooth gameplay. Highly recommended!",
+    "avatar": "https://api.multiavatar.com/TestUser.svg"
+  },
+  {
+    "author": "PuzzleFan",
+    "role": "益智游戏爱好者",
+    "content": "Perfect for relaxing after work. Love the music too.",
+    "avatar": "https://api.multiavatar.com/PuzzleFan.svg"
+  }
+]
