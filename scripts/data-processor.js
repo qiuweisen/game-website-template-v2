@@ -142,7 +142,8 @@ function generateSiteConfig(data) {
       showDownloadButton: data.gameInfo.gameUrl ? false : true,
       downloadUrl: data.gameInfo.gameUrl || "#",
       downloadCount: "10,000+"
-    }
+    },
+    compliance: generateComplianceConfig(data)
   };
 }
 
@@ -406,6 +407,48 @@ if (require.main === module) {
   }
   
   processAIData(inputFile, outputDir);
+}
+
+/**
+ * 生成合规配置
+ */
+function generateComplianceConfig(data) {
+  if (!data.compliance) {
+    return {
+      enabled: true,
+      preset: "basic",
+      showAgeVerification: true,
+      minimumAge: 13,
+      showRegionRestriction: false,
+      restrictedRegions: [],
+      showCookieConsent: true,
+      expiryDays: 30,
+      customConfig: null
+    };
+  }
+
+  const compliance = data.compliance;
+  let preset = "basic";
+
+  // 根据年龄分级和内容确定预设
+  if (compliance.minimumAge >= 18 ||
+      (compliance.contentWarnings && compliance.contentWarnings.length > 0)) {
+    preset = "strict";
+  } else if (compliance.recommendedPreset) {
+    preset = compliance.recommendedPreset;
+  }
+
+  return {
+    enabled: true,
+    preset: preset,
+    showAgeVerification: true,
+    minimumAge: compliance.minimumAge || 13,
+    showRegionRestriction: compliance.regionRestrictions && compliance.regionRestrictions.length > 0,
+    restrictedRegions: compliance.regionRestrictions || [],
+    showCookieConsent: true,
+    expiryDays: preset === "strict" ? 7 : 30,
+    customConfig: null
+  };
 }
 
 module.exports = { processAIData };

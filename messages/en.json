@@ -71,5 +71,63 @@
     "noCategories": "No categories found",
     "viewMore": "View More",
     "page": "Page"
+  },
+  "Compliance": {
+    "title": "Terms of Service & Privacy Policy",
+    "description": "In order to play you need to accept our Terms of Service and Privacy Policy",
+    "agreeToTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "agreeToPrivacy": "I agree to the",
+    "privacyPolicy": "Privacy Policy",
+    "ageVerification": "I confirm that I am at least {age} years old",
+    "cookieConsent": "I accept the use of cookies for analytics and functionality",
+    "regionRestricted": "Sorry, this service is not available in your region",
+    "legalNotice": "By continuing, you acknowledge that you have read and understood our legal documents",
+    "accept": "Accept",
+    "decline": "Decline",
+    "leave": "Leave Site"
+  },
+  "Cookies": {
+    "title": "Cookie Preferences",
+    "description": "We use cookies to enhance your experience and analyze site usage. You can customize your preferences below.",
+    "learnMore": "Learn more",
+    "settings": "Settings",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject All",
+    "settingsTitle": "Cookie Settings",
+    "alwaysActive": "Always Active",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "savePreferences": "Save Preferences",
+    "necessary": {
+      "title": "Necessary Cookies",
+      "description": "Essential for the website to function properly. Cannot be disabled."
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "Help us understand how visitors interact with our website."
+    },
+    "marketing": {
+      "title": "Marketing Cookies",
+      "description": "Used to track visitors and display relevant advertisements."
+    },
+    "functional": {
+      "title": "Functional Cookies",
+      "description": "Enable enhanced functionality and personalization."
+    }
+  },
+  "AgeVerification": {
+    "title": "Age Verification Required",
+    "description": "You must be at least {age} years old to access this content.",
+    "birthDate": "Date of Birth",
+    "verify": "Verify Age",
+    "pleaseEnterBirthDate": "Please enter your date of birth",
+    "ageRestriction": "You must be at least {age} years old to access this content",
+    "invalidDate": "Please enter a valid date",
+    "quickVerification": "Are you at least {age} years old?",
+    "yesIAm": "Yes, I am {age} or older",
+    "noIAmNot": "No, I am under {age}",
+    "redirectMessage": "You will be redirected in a few seconds...",
+    "privacyNotice": "Your age information is only used for verification and is not stored."
   }
 }

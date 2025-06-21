@@ -1,4 +1,5 @@
 export * from "./breadcrumbs"
+export * from "./compliance"
 export { default as FAQ } from "./faq"
 export * from "./favorites"
 export { default as FavoritesProvider } from './favorites'

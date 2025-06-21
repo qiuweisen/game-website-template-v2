@@ -56,5 +56,16 @@
   ],
   "isShowRecommendation": true,
   "enablePromotion": false,
-  "customizeFeatures": false
+  "customizeFeatures": false,
+  "compliance": {
+    "enabled": true,
+    "preset": "basic",
+    "showAgeVerification": true,
+    "minimumAge": 13,
+    "showRegionRestriction": false,
+    "restrictedRegions": [],
+    "showCookieConsent": true,
+    "expiryDays": 30,
+    "customConfig": null
+  }
 }

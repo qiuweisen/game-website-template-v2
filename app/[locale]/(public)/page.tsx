@@ -48,16 +48,17 @@ export default async function Page({ params }: Props) {
   setRequestLocale(locale);
   const siteConfig2 = siteConfig as unknown as SiteConfig
   const pageName = siteConfig2.pageName;
-  let features2ContentResult = null;
-  if(siteConfig2.customizeFeatures){
-    try {
-      const Content = (await import(`!!raw-loader!./config/features/${locale}.mdx`)).default;
-      const { content } = matter(Content);
-      features2ContentResult = content;
-    } catch (error) {
-      console.error(`features2 section can not find ${locale}.mdx`, error);
-    }
-  }
+  const features2ContentResult = null;
+  // 注释掉自定义features功能，避免webpack构建错误
+  // if(siteConfig2.customizeFeatures){
+  //   try {
+  //     const Content = (await import(`!!raw-loader!./config/features/${locale}.mdx`)).default;
+  //     const { content } = matter(Content);
+  //     features2ContentResult = content;
+  //   } catch (error) {
+  //     console.error(`features2 section can not find ${locale}.mdx`, error);
+  //   }
+  // }
 
   const PageContent = () => (
     <div className="bg-background pt-6 pb-8">

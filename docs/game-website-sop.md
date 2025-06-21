@@ -110,7 +110,17 @@ bun dev
     }
   ],
   "isShowRecommendation": true,
-  "customizeFeatures": false
+  "customizeFeatures": false,
+  "compliance": {
+    "enabled": true,
+    "preset": "basic",
+    "showAgeVerification": true,
+    "minimumAge": 13,
+    "showRegionRestriction": false,
+    "restrictedRegions": [],
+    "showCookieConsent": true,
+    "expiryDays": 30
+  }
 }
 ```
 
@@ -119,6 +129,48 @@ bun dev
 - `templateType: "single-game"` - 确保模板类型正确
 - 所有URL必须是完整的https链接
 - 游戏名称避免使用特殊字符
+
+### 2.1.1 合规弹窗配置
+
+合规弹窗配置已集成到主配置文件中，通过 `compliance` 字段进行配置：
+
+**预设配置选择**:
+- `basic` - 适用于大多数游戏（13岁+）
+- `strict` - 适用于成人内容（18岁+）
+- `gdpr` - 适用于欧盟用户（16岁+）
+- `disabled` - 禁用合规功能（开发环境）
+
+**常用配置示例**:
+
+```json
+// 基础配置（推荐）
+"compliance": {
+  "enabled": true,
+  "preset": "basic",
+  "minimumAge": 13
+}
+
+// 成人游戏配置
+"compliance": {
+  "enabled": true,
+  "preset": "strict",
+  "minimumAge": 18,
+  "expiryDays": 7
+}
+
+// 禁用配置（开发环境）
+"compliance": {
+  "enabled": false
+}
+```
+
+**配置说明**:
+- `enabled`: 是否启用合规弹窗
+- `preset`: 预设配置类型
+- `minimumAge`: 最小年龄限制
+- `showAgeVerification`: 是否显示年龄验证
+- `showCookieConsent`: 是否显示Cookie同意
+- `expiryDays`: 合规状态有效期（天）
 
 ### 2.2 开发环境配置 `lib/config/default.json`
 
@@ -194,6 +246,17 @@ export const siteConfig: SiteConfig = config;
   },
   "HomeComments": {
     "title": "Comments on [游戏名称]"
+  },
+  "Compliance": {
+    "title": "Terms of Service & Privacy Policy",
+    "description": "To use this website, you need to agree to our Terms of Service and Privacy Policy",
+    "agreeToTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "ageVerification": "I confirm that I am at least {age} years old",
+    "cookieConsent": "I agree to the use of cookies for analytics and functionality",
+    "accept": "Accept",
+    "decline": "Decline"
   }
 }
 ```
@@ -389,6 +452,14 @@ SEO信息主要通过以下文件配置：
 - [ ] 下载链接功能
 - [ ] 视频播放功能
 
+**合规功能测试**
+- [ ] 首次访问显示合规弹窗
+- [ ] 服务条款和隐私协议链接正常
+- [ ] 年龄验证复选框功能正常
+- [ ] Cookie同意复选框功能正常
+- [ ] 同意后弹窗消失且状态保存
+- [ ] 刷新页面不再显示弹窗（状态持久化）
+
 ### 7.2 SEO验证
 
 **基础SEO检查**
@@ -452,6 +523,9 @@ curl -s http://localhost:3000/zh-CN | grep -i "[游戏名称]"
 - [ ] `resources/faqs/[语言].json` 已配置
 - [ ] `resources/recommendation/[语言].json` 已配置
 - [ ] 视频和评论内容已添加
+- [ ] 合规弹窗配置已设置
+- [ ] 服务条款页面已创建 (`/terms-of-services`)
+- [ ] 隐私协议页面已创建 (`/privacy-policy`)
 
 ### 8.2 内容质量检查
 - [ ] 游戏信息准确无误

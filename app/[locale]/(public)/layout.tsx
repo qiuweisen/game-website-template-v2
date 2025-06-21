@@ -12,6 +12,8 @@ import { Toaster } from '@/lib/ui/components/toaster';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import MicrosoftClarity from '@/lib/components/microsoft-clarity';
 import { SidebarProvider } from '@/lib/context/SidebarContext';
+import { ComplianceProvider, compliancePresets } from '@/lib/components/compliance';
+import CookieBanner from '@/lib/components/compliance/CookieBanner';
 
 type Props = {
   children: ReactNode;
@@ -48,23 +50,37 @@ export default async function LocaleLayout({ children, params }: Props) {
   });
   // 提取域名
   const domain = siteConfig.domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+
+  // 获取合规配置
+  const complianceConfig = siteConfig.compliance?.enabled
+    ? (siteConfig.compliance.customConfig ||
+       compliancePresets[siteConfig.compliance.preset as keyof typeof compliancePresets] ||
+       compliancePresets.basic)
+    : compliancePresets.disabled;
+
+  // 确保配置对象存在
+  const safeComplianceConfig = complianceConfig || compliancePresets.disabled;
+
   return (
     <NextIntlClientProvider messages={messages} locale={locale}>
       <NextUIProvider>
-      <SidebarProvider>
-        <Toaster />
-        <Navbar items={navbars} />
-        {children}
-        <Footer items={navbars} />
-        {!isDev && (
-          <>
-            {siteConfig.gaId && <GoogleAnalytics gaId={siteConfig.gaId as string} />}
-            {siteConfig.plausible && <script defer data-domain={domain} src={siteConfig.plausible}></script>}
-            {siteConfig.clarityId && <MicrosoftClarity clarityId={siteConfig.clarityId} />}
-            {siteConfig.adsenseClientId && <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsenseClientId}`} crossOrigin="anonymous"></script>}
-          </>
-        )}
-        </SidebarProvider>
+        <ComplianceProvider config={safeComplianceConfig}>
+          <SidebarProvider>
+            <Toaster />
+            <Navbar items={navbars} />
+            {children}
+            <Footer items={navbars} />
+            <CookieBanner />
+            {!isDev && (
+              <>
+                {siteConfig.gaId && <GoogleAnalytics gaId={siteConfig.gaId as string} />}
+                {siteConfig.plausible && <script defer data-domain={domain} src={siteConfig.plausible}></script>}
+                {siteConfig.clarityId && <MicrosoftClarity clarityId={siteConfig.clarityId} />}
+                {siteConfig.adsenseClientId && <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsenseClientId}`} crossOrigin="anonymous"></script>}
+              </>
+            )}
+          </SidebarProvider>
+        </ComplianceProvider>
       </NextUIProvider>
     </NextIntlClientProvider>
   );

@@ -9,7 +9,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const customHeadContent = siteConfig.customHeadContent || '';
   return (
     <html lang="en">
-      <head  dangerouslySetInnerHTML={{ __html: customHeadContent }}>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {customHeadContent && (
+          <div dangerouslySetInnerHTML={{ __html: customHeadContent }} />
+        )}
       </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
